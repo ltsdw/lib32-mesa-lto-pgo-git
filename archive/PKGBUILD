@@ -37,8 +37,8 @@ makedepends=('python-mako' 'lib32-libxml2' 'lib32-libx11' 'xorgproto' 'lib32-gcc
              'lib32-libglvnd' 'meson' 'lib32-libxrandr'
             )
 
-depends+=('lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence' 'lib32-libelf'
-         'glslang' 'lib32-zstd'
+depends+=('lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage'
+          'lib32-libxshmfence' 'lib32-libelf' 'glslang' 'lib32-zstd'
          )
 
 optdepends=('opengl-man-pages: for the OpenGL API man pages')
