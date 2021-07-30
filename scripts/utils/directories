@@ -1,0 +1,3 @@
+#! /hint/sh
+
+pgo_build_dir="$startdir/src-pgo/pgo_build"
