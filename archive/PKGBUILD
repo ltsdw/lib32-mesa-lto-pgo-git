@@ -1,33 +1,33 @@
 ##############################################################################
 
-PGO="generate" # possible values are ("generate", "use", "off")
+_pkgbuild_dir=$PWD
+
+_mesa_commit="#commit=f376597d"
+
+PGO="use" # possible values are ("generate", "use", "off")
 _march="native" # processor architeture, leave empty if unkown
 
 # adapt the naming depeding on the compiled type
 if [ "$PGO" != "off" ]; then
-    pkgname="lib32-mesa-lto-pgo-$PGO-git"
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO and PGO. Git version"
-    depends=("mesa-lto-pgo-$PGO-git")
 else
-    pkgname=lib32-mesa-lto-git
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO. Git version"
-    depends=('mesa-lto-git')
 fi
-
-###############################################################################
-
-# sourcing scripts and envars
-source "$PWD/scripts/utils/envar"
-source "$PWD/scripts/aux-build"
-source "$PWD/scripts/aux-package"
-source "$PWD/scripts/aux-cleaning"
-source "$PWD/scripts/utils/directories"
 
 ##############################################################################
 
-_mesa_commit="#commit=f376597d"
+# sourcing scripts and envars
+source "$_pkgbuild_dir/scripts/utils/envar"
+source "$_pkgbuild_dir/scripts/aux-build"
+source "$_pkgbuild_dir/scripts/aux-package"
+source "$_pkgbuild_dir/scripts/aux-cleaning"
+source "$_pkgbuild_dir/scripts/utils/directories"
 
-pkgver=21.3.0_devel.143150.f376597d00d
+###############################################################################
+
+pkgname=lib32-mesa-lto-pgo-git
+
+pkgver=21.3.0_devel.f376597d00d_use
 
 pkgrel=1
 
@@ -37,15 +37,15 @@ makedepends=('python-mako' 'lib32-libxml2' 'lib32-libx11' 'xorgproto' 'lib32-gcc
              'lib32-libglvnd' 'meson' 'lib32-libxrandr'
             )
 
-depends+=('lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage'
-          'lib32-libxshmfence' 'lib32-libelf' 'glslang' 'lib32-zstd'
+depends=('mesa-lto-pgo-git' 'lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence' 'lib32-libelf'
+         'glslang' 'lib32-zstd'
          )
 
 optdepends=('opengl-man-pages: for the OpenGL API man pages')
 
 provides=('lib32-mesa' 'lib32-vulkan-intel' 'lib32-opengl-driver' 'lib32-vulkan-driver')
 
-conflicts=('lib32-mesa' 'lib32-vulkan-intel')
+conflicts=('lib32-mesa' 'lib32-vulkan-intel' 'lib32-vulkan-radeon' 'lib32-libva-mesa-driver' 'lib32-mesa-vdpau')
 
 url="https://www.mesa3d.org"
 
@@ -72,7 +72,7 @@ pkgver()
 {
     cd mesa
     read -r _ver <VERSION
-    echo ${_ver/-/_}.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+    echo ${_ver/-/_}.$(git rev-parse --short HEAD)_$PGO
 }
 
 prepare()
