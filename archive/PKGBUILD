@@ -2,9 +2,9 @@
 
 _pkgbuild_dir=$PWD
 
-_mesa_commit="#commit=f376597d"
+_mesa_commit="#commit=1c0eb7aa78b"
 
-PGO="use" # possible values are ("generate", "use", "off")
+PGO="generate" # possible values are ("generate", "use", "off")
 _march="native" # processor architeture, leave empty if unkown
 
 # adapt the naming depeding on the compiled type
@@ -27,18 +27,18 @@ source "$_pkgbuild_dir/scripts/utils/directories"
 
 pkgname=lib32-mesa-lto-pgo-git
 
-pkgver=21.3.0_devel.f376597d00d_use
+pkgver=22.0.0_devel.1c0eb7aa78b_use
 
 pkgrel=1
 
 arch=('x86_64')
 
 makedepends=('python-mako' 'lib32-libxml2' 'lib32-libx11' 'xorgproto' 'lib32-gcc-libs' 'lib32-libelf' 'git'
-             'lib32-libglvnd' 'meson' 'lib32-libxrandr'
+             'lib32-libglvnd' 'meson' 'lib32-libxrandr' 'lib32-llvm'
             )
 
 depends=('mesa-lto-pgo-git' 'lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence' 'lib32-libelf'
-         'glslang' 'lib32-zstd'
+         'glslang' 'lib32-zstd' 'lib32-llvm-libs'
          )
 
 optdepends=('opengl-man-pages: for the OpenGL API man pages')
