@@ -2,10 +2,10 @@
 
 _pkgbuild_dir=$PWD
 
-_mesa_commit="#commit=1c0eb7aa78b"
+_mesa_commit="#commit=13f68bcc"
 
-PGO="generate" # possible values are ("generate", "use", "off")
-_march="native" # processor architeture, leave empty if unkown
+PGO="off" # possible values are ("generate", "use", "off")
+_march="tigerlake" # processor architeture, leave empty if unkown
 
 # adapt the naming depeding on the compiled type
 if [ "$PGO" != "off" ]; then
@@ -27,7 +27,7 @@ source "$_pkgbuild_dir/scripts/utils/directories"
 
 pkgname=lib32-mesa-lto-pgo-git
 
-pkgver=22.0.0_devel.1c0eb7aa78b_use
+pkgver=23.1.0_devel.13f68bcce14_off
 
 pkgrel=1
 

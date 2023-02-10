@@ -2,49 +2,47 @@
 
 _no_pgo_build()
 {
-    meson setup mesa _build                         \
-        --strip                                     \
-        --native-file llvm32.native                 \
-        -D b_ndebug='false'                         \
-        -D b_lto='true'                             \
-        -D b_lto_threads='4'                        \
-        -D buildtype='plain'                        \
-        --wrap-mode='nofallback'                    \
-        -D prefix='/usr'                            \
-        -D sysconfdir='/etc'                        \
-        --libdir='/usr/lib32'                       \
-        -D platforms='x11'                          \
-        -D dri-drivers=[]                           \
-        -D gallium-drivers='iris','swrast','virgl'  \
-        -D vulkan-drivers='intel'                   \
-        -D shader-cache='enabled'                   \
-        -D dri3='enabled'                           \
-        -D egl='enabled'                            \
-        -D gallium-extra-hud='false'                \
-        -D vulkan-layers=[]                         \
-        -D gallium-nine='true'                      \
-        -D gallium-omx='disabled'                   \
-        -D gallium-opencl='disabled'                \
-        -D gallium-va='disabled'                    \
-        -D gallium-vdpau='disabled'                 \
-        -D gallium-xa='disabled'                    \
-        -D gallium-xvmc='disabled'                  \
-        -D gbm='disabled'                           \
-        -D gles1='disabled'                         \
-        -D gles2='enabled'                          \
-        -D glvnd='true'                             \
-        -D glx='dri'                                \
-        -D libunwind='disabled'                     \
-        -D llvm='enabled'                           \
-        -D lmsensors='disabled'                     \
-        -D osmesa='false'                           \
-        -D shared-glapi='enabled'                   \
-        -D valgrind='disabled'                      \
-        -D tools=[]                                 \
-        -D zstd='true'                              \
+    meson setup mesa _build                                     \
+        --strip                                                 \
+        --native-file llvm32.native                             \
+        -D b_ndebug='false'                                     \
+        -D b_lto='true'                                         \
+        -D b_lto_threads='12'                                   \
+        -D buildtype='plain'                                    \
+        --wrap-mode='nofallback'                                \
+        -D prefix='/usr'                                        \
+        -D sysconfdir='/etc'                                    \
+        --libdir='/usr/lib32'                                   \
+        -D platforms='x11'                                      \
+        -D gallium-drivers='iris','swrast','virgl'              \
+        -D vulkan-drivers='intel'                               \
+        -D shader-cache='enabled'                               \
+        -D dri3='enabled'                                       \
+        -D egl='enabled'                                        \
+        -D gallium-extra-hud='false'                            \
+        -D vulkan-layers=[]                                     \
+        -D gallium-nine='true'                                  \
+        -D gallium-omx='disabled'                               \
+        -D gallium-opencl='disabled'                            \
+        -D gallium-va='disabled'                                \
+        -D gallium-vdpau='disabled'                             \
+        -D gallium-xa='disabled'                                \
+        -D gbm='disabled'                                       \
+        -D gles1='disabled'                                     \
+        -D gles2='enabled'                                      \
+        -D glvnd='true'                                         \
+        -D glx='dri'                                            \
+        -D libunwind='disabled'                                 \
+        -D llvm='enabled'                                       \
+        -D lmsensors='disabled'                                 \
+        -D osmesa='false'                                       \
+        -D shared-glapi='enabled'                               \
+        -D valgrind='disabled'                                  \
+        -D tools=[]                                             \
+        -D zstd='enabled'                                       \
         -D microsoft-clc='disabled'
  
-    meson configure _build
+    meson configure --no-pager _build
 
     ninja $NINJAFLAGS -C _build
 }
@@ -56,7 +54,7 @@ _generate_pgo_build()
         --native-file llvm32.native                 \
         -D b_ndebug='false'                         \
         -D b_lto='true'                             \
-        -D b_lto_threads='4'                        \
+        -D b_lto_threads='12'                       \
         -D b_pgo='generate'                         \
         -D buildtype='plain'                        \
         --wrap-mode='nofallback'                    \
@@ -78,7 +76,6 @@ _generate_pgo_build()
         -D gallium-va='disabled'                    \
         -D gallium-vdpau='disabled'                 \
         -D gallium-xa='disabled'                    \
-        -D gallium-xvmc='disabled'                  \
         -D gbm='disabled'                           \
         -D gles1='disabled'                         \
         -D gles2='enabled'                          \
@@ -91,10 +88,10 @@ _generate_pgo_build()
         -D shared-glapi='enabled'                   \
         -D valgrind='disabled'                      \
         -D tools=[]                                 \
-        -D zstd='true'                              \
+        -D zstd='enabled'                           \
         -D microsoft-clc='disabled'
 
-    meson configure "$pgo_build_dir"
+    meson configure --no-pager "$pgo_build_dir"
 
     ninja $NINJAFLAGS -C "$pgo_build_dir"
 }
@@ -106,7 +103,7 @@ _use_pgo_build()
         --native-file llvm32.native                 \
         -D b_ndebug='false'                         \
         -D b_lto='true'                             \
-        -D b_lto_threads='4'                        \
+        -D b_lto_threads='12'                       \
         -D b_pgo='use'                              \
         -D buildtype='plain'                        \
         --wrap-mode='nofallback'                    \
@@ -128,7 +125,6 @@ _use_pgo_build()
         -D gallium-va='disabled'                    \
         -D gallium-vdpau='disabled'                 \
         -D gallium-xa='disabled'                    \
-        -D gallium-xvmc='disabled'                  \
         -D gbm='disabled'                           \
         -D gles1='disabled'                         \
         -D gles2='enabled'                          \
@@ -141,10 +137,10 @@ _use_pgo_build()
         -D shared-glapi='enabled'                   \
         -D valgrind='disabled'                      \
         -D tools=[]                                 \
-        -D zstd='true'                              \
+        -D zstd='enabled'                           \
         -D microsoft-clc='disabled'
  
-    meson configure "$pgo_build_dir"
+    meson configure --no-pager "$pgo_build_dir"
 
     ninja $NINJAFLAGS -C "$pgo_build_dir"
 }
