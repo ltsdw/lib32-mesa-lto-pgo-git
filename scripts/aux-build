@@ -40,7 +40,6 @@ _no_pgo_build()
         -D valgrind='disabled'                                                              \
         -D tools=[]                                                                         \
         -D zstd='enabled'                                                                   \
-        -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc                              \
         -D microsoft-clc='disabled'
 
     meson configure --no-pager _build
@@ -89,7 +88,6 @@ _generate_pgo_build()
         -D valgrind='disabled'                                                              \
         -D tools=[]                                                                         \
         -D zstd='enabled'                                                                   \
-        -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc                              \
         -D microsoft-clc='disabled'
  
     meson configure --no-pager "$pgo_build_dir"
@@ -138,7 +136,6 @@ _use_pgo_build()
         -D valgrind='disabled'                                                              \
         -D tools=[]                                                                         \
         -D zstd='enabled'                                                                   \
-        -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc                              \
         -D microsoft-clc='disabled'
  
     meson configure --no-pager "$pgo_build_dir"
