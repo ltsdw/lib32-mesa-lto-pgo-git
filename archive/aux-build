@@ -41,7 +41,7 @@ _no_pgo_build()
         -D tools=[]                                             \
         -D zstd='enabled'                                       \
         -D microsoft-clc='disabled'
- 
+
     meson configure --no-pager _build
 
     ninja $NINJAFLAGS -C _build
@@ -139,7 +139,7 @@ _use_pgo_build()
         -D tools=[]                                 \
         -D zstd='enabled'                           \
         -D microsoft-clc='disabled'
- 
+
     meson configure --no-pager "$pgo_build_dir"
 
     ninja $NINJAFLAGS -C "$pgo_build_dir"
