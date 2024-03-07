@@ -2,7 +2,7 @@
 
 _pkgbuild_dir=$PWD
 
-_mesa_commit="#commit=ec4990ef"
+_mesa_commit="#commit=f3fe1f2f"
 
 PGO="off" # possible values are ("generate", "use", "off")
 _march="" # processor architeture, leave empty if unkown
@@ -27,19 +27,20 @@ source "$_pkgbuild_dir/scripts/utils/directories"
 
 pkgname=lib32-mesa-lto-pgo-git
 
-pkgver=24.1.0_devel.ec4990ef419_off
+pkgver=24.1.0_devel.f3fe1f2f18d_off
 
 pkgrel=1
 
 arch=('x86_64')
 
-makedepends=('python-mako' 'lib32-libxml2' 'lib32-libx11' 'xorgproto'
-             'lib32-gcc-libs' 'lib32-libvdpau' 'lib32-libelf' 'git' 'lib32-libglvnd'
+makedepends=('python-mako' 'lib32-libxml2' 'xorgproto'
+             'lib32-clang' 'lib32-gcc-libs' 'lib32-libvdpau' 'lib32-libelf' 'git' 'lib32-libglvnd'
              'wayland-protocols' 'lib32-wayland' 'meson' 'lib32-libva' 'lib32-libxrandr'
+             'lib32-spirv-tools' 'lib32-spirv-llvm-translator'
             )
 
 depends=('mesa-lto-pgo-git' 'lib32-gcc-libs' 'lib32-libdrm' 'lib32-wayland' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence'
-         'lib32-libelf' 'lib32-libunwind' 'lib32-lm_sensors' 'glslang' 'lib32-vulkan-icd-loader' 'lib32-zstd'
+         'lib32-libx11' 'lib32-libelf' 'lib32-libunwind' 'lib32-lm_sensors' 'glslang' 'lib32-vulkan-icd-loader' 'lib32-zstd'
          )
 
 optdepends=('opengl-man-pages: for the OpenGL API man pages')
