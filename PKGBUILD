@@ -2,7 +2,7 @@
 
 _pkgbuild_dir=$PWD
 
-_mesa_commit="#commit=f3fe1f2f"
+_mesa_commit="#commit=485d56ed"
 
 PGO="off" # possible values are ("generate", "use", "off")
 _march="" # processor architeture, leave empty if unkown
@@ -36,7 +36,7 @@ arch=('x86_64')
 makedepends=('python-mako' 'lib32-libxml2' 'xorgproto'
              'lib32-clang' 'lib32-gcc-libs' 'lib32-libvdpau' 'lib32-libelf' 'git' 'lib32-libglvnd'
              'wayland-protocols' 'lib32-wayland' 'meson' 'lib32-libva' 'lib32-libxrandr'
-             'lib32-spirv-tools' 'lib32-spirv-llvm-translator'
+             'python-packaging'
             )
 
 depends=('mesa-lto-pgo-git' 'lib32-gcc-libs' 'lib32-libdrm' 'lib32-wayland' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence'
@@ -69,6 +69,8 @@ sha512sums=('SKIP'
             '25da77914dded10c1f432ebcbf29941124138824ceecaf1367b3deedafaecabc082d463abcfa3d15abff59f177491472b505bcb5ba0c4a51bb6b93b4721a23c2'
             'c7dbb390ebde291c517a854fcbe5166c24e95206f768cc9458ca896b2253aabd6df12a7becf831998721b2d622d0c02afdd8d519e77dea8e1d6807b35f0166fe'
            )
+
+options=(!debug)
 
 ##############################################################################
 

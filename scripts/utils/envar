@@ -1,6 +1,6 @@
 #! /hint/sh
 
-NINJAFLAGS="-d stats -w dupbuild=err -w phonycycle=err"
+NINJAFLAGS="-d stats -w phonycycle=err"
 
 if ! [ -z "$_march" ]; then
     march="-march=$_march"
