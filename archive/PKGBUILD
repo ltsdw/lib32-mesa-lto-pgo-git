@@ -2,7 +2,7 @@
 
 _pkgbuild_dir=$PWD
 
-_mesa_commit="#commit=485d56ed"
+_mesa_commit="#commit=ab72be6c"
 
 PGO="off" # possible values are ("generate", "use", "off")
 _march="tigerlake" # processor architeture, leave empty if unkown
@@ -27,7 +27,7 @@ source "$_pkgbuild_dir/scripts/utils/directories"
 
 pkgname=lib32-mesa-lto-pgo-git
 
-pkgver=24.2.0_devel.485d56ed816_off
+pkgver=24.3.0_devel.ab72be6c5e9_off
 
 pkgrel=1
 
@@ -35,13 +35,13 @@ arch=('x86_64')
 
 makedepends=('python-mako' 'lib32-libxml2' 'xorgproto' 'lib32-gcc-libs' 'lib32-libelf' 'git'
              'lib32-libglvnd' 'meson' 'lib32-libxrandr' 'lib32-llvm'
-             'lib32-clang' 'python-packaging'
+             'lib32-clang' 'python-packaging' 'python-pyaml' 'lib32-spirv-llvm-translator' 'lib32-spirv-tools'
+             'wayland-protocols'
             )
 
 depends=('mesa-lto-pgo-git' 'lib32-gcc-libs' 'lib32-libdrm' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence' 'lib32-libelf'
-         'glslang' 'lib32-zstd' 'lib32-llvm-libs' 'lib32-vulkan-icd-loader' 'lib32-libx11'
+         'glslang' 'lib32-zstd' 'lib32-llvm-libs' 'lib32-vulkan-icd-loader' 'lib32-libx11' 'lib32-wayland'
          )
-
 optdepends=('opengl-man-pages: for the OpenGL API man pages')
 
 provides=('lib32-mesa' 'lib32-vulkan-intel' 'lib32-opengl-driver' 'lib32-vulkan-driver')

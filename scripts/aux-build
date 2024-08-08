@@ -2,44 +2,44 @@
 
 _no_pgo_build()
 {
-    meson setup mesa _build                                                                 \
-        --strip                                                                             \
-        --native-file llvm32.native                                                         \
-        -D b_ndebug='false'                                                                 \
-        -D b_lto='true'                                                                     \
-        -D buildtype='plain'                                                                \
-        --wrap-mode='nofallback'                                                            \
-        -D prefix='/usr'                                                                    \
-        -D sysconfdir='/etc'                                                                \
-        --libdir='/usr/lib32'                                                               \
-        -D platforms='x11,wayland'                                                          \
-        -D dri-drivers='i915,i965,r200,r100,nouveau'                                        \
-        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,swrast,virgl,iris,zink,crocus'  \
-        -D vulkan-drivers='amd,intel'                                                       \
-        -D dri3='enabled'                                                                   \
-        -D egl='enabled'                                                                    \
-        -D gallium-extra-hud='true'                                                         \
-        -D vulkan-layers='device-select,overlay'                                            \
-        -D gallium-nine='true'                                                              \
-        -D gallium-omx='disabled'                                                           \
-        -D gallium-opencl='disabled'                                                        \
-        -D gallium-va='enabled'                                                             \
-        -D gallium-vdpau='enabled'                                                          \
-        -D gallium-xa='enabled'                                                             \
-        -D gallium-xvmc='disabled'                                                          \
-        -D gbm='enabled'                                                                    \
-        -D gles1='disabled'                                                                 \
-        -D gles2='enabled'                                                                  \
-        -D glvnd='enabled'                                                                  \
-        -D glx='dri'                                                                        \
-        -D libunwind='enabled'                                                              \
-        -D llvm='enabled'                                                                   \
-        -D lmsensors='enabled'                                                              \
-        -D osmesa='true'                                                                    \
-        -D shared-glapi='enabled'                                                           \
-        -D valgrind='disabled'                                                              \
-        -D tools=[]                                                                         \
-        -D zstd='enabled'                                                                   \
+    meson setup mesa _build                                                                             \
+        --strip                                                                                         \
+        --native-file llvm32.native                                                                     \
+        -D b_ndebug='false'                                                                             \
+        -D b_lto='true'                                                                                 \
+        -D buildtype='plain'                                                                            \
+        --wrap-mode='nofallback'                                                                        \
+        -D prefix='/usr'                                                                                \
+        -D sysconfdir='/etc'                                                                            \
+        --libdir='/usr/lib32'                                                                           \
+        -D platforms='x11,wayland'                                                                      \
+        -D dri-drivers='i915,i965,r200,r100,nouveau'                                                    \
+        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,softpipe,llvmpipe,virgl,iris,zink,crocus'   \
+        -D vulkan-drivers='amd,intel'                                                                   \
+        -D dri3='enabled'                                                                               \
+        -D egl='enabled'                                                                                \
+        -D gallium-extra-hud='true'                                                                     \
+        -D vulkan-layers='device-select,overlay'                                                        \
+        -D gallium-nine='true'                                                                          \
+        -D gallium-omx='disabled'                                                                       \
+        -D gallium-opencl='disabled'                                                                    \
+        -D gallium-va='enabled'                                                                         \
+        -D gallium-vdpau='enabled'                                                                      \
+        -D gallium-xa='enabled'                                                                         \
+        -D gallium-xvmc='disabled'                                                                      \
+        -D gbm='enabled'                                                                                \
+        -D gles1='disabled'                                                                             \
+        -D gles2='enabled'                                                                              \
+        -D glvnd='enabled'                                                                              \
+        -D glx='dri'                                                                                    \
+        -D libunwind='enabled'                                                                          \
+        -D llvm='enabled'                                                                               \
+        -D lmsensors='enabled'                                                                          \
+        -D osmesa='true'                                                                                \
+        -D shared-glapi='enabled'                                                                       \
+        -D valgrind='disabled'                                                                          \
+        -D tools=[]                                                                                     \
+        -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
     meson configure --no-pager _build
@@ -49,45 +49,45 @@ _no_pgo_build()
 
 _generate_pgo_build()
 {
-    meson setup mesa "$pgo_build_dir"                                                       \
-        --strip                                                                             \
-        --native-file llvm32.native                                                         \
-        -D b_ndebug='false'                                                                 \
-        -D b_lto='true'                                                                     \
-        -D b_pgo='generate'                                                                 \
-        -D buildtype='plain'                                                                \
-        --wrap-mode='nofallback'                                                            \
-        -D prefix='/usr'                                                                    \
-        -D sysconfdir='/etc'                                                                \
-        --libdir='/usr/lib32'                                                               \
-        -D platforms='x11,wayland'                                                          \
-        -D dri-drivers='i915,i965,r200,r100,nouveau'                                        \
-        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,swrast,virgl,iris,zink,crocus'  \
-        -D vulkan-drivers='amd,intel'                                                       \
-        -D dri3='enabled'                                                                   \
-        -D egl='enabled'                                                                    \
-        -D gallium-extra-hud='true'                                                         \
-        -D vulkan-layers='device-select,overlay'                                            \
-        -D gallium-nine='true'                                                              \
-        -D gallium-omx='disabled'                                                           \
-        -D gallium-opencl='disabled'                                                        \
-        -D gallium-va='enabled'                                                             \
-        -D gallium-vdpau='enabled'                                                          \
-        -D gallium-xa='enabled'                                                             \
-        -D gallium-xvmc='disabled'                                                          \
-        -D gbm='enabled'                                                                    \
-        -D gles1='disabled'                                                                 \
-        -D gles2='enabled'                                                                  \
-        -D glvnd='enabled'                                                                  \
-        -D glx='dri'                                                                        \
-        -D libunwind='enabled'                                                              \
-        -D llvm='enabled'                                                                   \
-        -D lmsensors='enabled'                                                              \
-        -D osmesa='true'                                                                    \
-        -D shared-glapi='enabled'                                                           \
-        -D valgrind='disabled'                                                              \
-        -D tools=[]                                                                         \
-        -D zstd='enabled'                                                                   \
+    meson setup mesa "$pgo_build_dir"                                                                   \
+        --strip                                                                                         \
+        --native-file llvm32.native                                                                     \
+        -D b_ndebug='false'                                                                             \
+        -D b_lto='true'                                                                                 \
+        -D b_pgo='generate'                                                                             \
+        -D buildtype='plain'                                                                            \
+        --wrap-mode='nofallback'                                                                        \
+        -D prefix='/usr'                                                                                \
+        -D sysconfdir='/etc'                                                                            \
+        --libdir='/usr/lib32'                                                                           \
+        -D platforms='x11,wayland'                                                                      \
+        -D dri-drivers='i915,i965,r200,r100,nouveau'                                                    \
+        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,softpipe,llvmpipe,virgl,iris,zink,crocus'   \
+        -D vulkan-drivers='amd,intel'                                                                   \
+        -D dri3='enabled'                                                                               \
+        -D egl='enabled'                                                                                \
+        -D gallium-extra-hud='true'                                                                     \
+        -D vulkan-layers='device-select,overlay'                                                        \
+        -D gallium-nine='true'                                                                          \
+        -D gallium-omx='disabled'                                                                       \
+        -D gallium-opencl='disabled'                                                                    \
+        -D gallium-va='enabled'                                                                         \
+        -D gallium-vdpau='enabled'                                                                      \
+        -D gallium-xa='enabled'                                                                         \
+        -D gallium-xvmc='disabled'                                                                      \
+        -D gbm='enabled'                                                                                \
+        -D gles1='disabled'                                                                             \
+        -D gles2='enabled'                                                                              \
+        -D glvnd='enabled'                                                                              \
+        -D glx='dri'                                                                                    \
+        -D libunwind='enabled'                                                                          \
+        -D llvm='enabled'                                                                               \
+        -D lmsensors='enabled'                                                                          \
+        -D osmesa='true'                                                                                \
+        -D shared-glapi='enabled'                                                                       \
+        -D valgrind='disabled'                                                                          \
+        -D tools=[]                                                                                     \
+        -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
     meson configure --no-pager "$pgo_build_dir"
@@ -97,45 +97,45 @@ _generate_pgo_build()
 
 _use_pgo_build()
 {
-    meson setup mesa "$pgo_build_dir"                                                       \
-        --strip                                                                             \
-        --native-file llvm32.native                                                         \
-        -D b_ndebug='false'                                                                 \
-        -D b_lto='true'                                                                     \
-        -D b_pgo='use'                                                                      \
-        -D buildtype='plain'                                                                \
-        --wrap-mode='nofallback'                                                            \
-        -D prefix='/usr'                                                                    \
-        -D sysconfdir='/etc'                                                                \
-        --libdir='/usr/lib32'                                                               \
-        -D platforms='x11,wayland'                                                          \
-        -D dri-drivers='i915,i965,r200,r100,nouveau'                                        \
-        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,swrast,virgl,iris,zink,crocus'  \
-        -D vulkan-drivers='amd,intel'                                                       \
-        -D dri3='enabled'                                                                   \
-        -D egl='enabled'                                                                    \
-        -D gallium-extra-hud='true'                                                         \
-        -D vulkan-layers='device-select,overlay'                                            \
-        -D gallium-nine='true'                                                              \
-        -D gallium-omx='disabled'                                                           \
-        -D gallium-opencl='disabled'                                                        \
-        -D gallium-va='enabled'                                                             \
-        -D gallium-vdpau='enabled'                                                          \
-        -D gallium-xa='enabled'                                                             \
-        -D gallium-xvmc='disabled'                                                          \
-        -D gbm='enabled'                                                                    \
-        -D gles1='disabled'                                                                 \
-        -D gles2='enabled'                                                                  \
-        -D glvnd='enabled'                                                                  \
-        -D glx='dri'                                                                        \
-        -D libunwind='enabled'                                                              \
-        -D llvm='enabled'                                                                   \
-        -D lmsensors='enabled'                                                              \
-        -D osmesa='true'                                                                    \
-        -D shared-glapi='enabled'                                                           \
-        -D valgrind='disabled'                                                              \
-        -D tools=[]                                                                         \
-        -D zstd='enabled'                                                                   \
+    meson setup mesa "$pgo_build_dir"                                                                   \
+        --strip                                                                                         \
+        --native-file llvm32.native                                                                     \
+        -D b_ndebug='false'                                                                             \
+        -D b_lto='true'                                                                                 \
+        -D b_pgo='use'                                                                                  \
+        -D buildtype='plain'                                                                            \
+        --wrap-mode='nofallback'                                                                        \
+        -D prefix='/usr'                                                                                \
+        -D sysconfdir='/etc'                                                                            \
+        --libdir='/usr/lib32'                                                                           \
+        -D platforms='x11,wayland'                                                                      \
+        -D dri-drivers='i915,i965,r200,r100,nouveau'                                                    \
+        -D gallium-drivers='r300,r600,radeonsi,nouveau,svga,softpipe,llvmpipe,virgl,iris,zink,crocus'   \
+        -D vulkan-drivers='amd,intel'                                                                   \
+        -D dri3='enabled'                                                                               \
+        -D egl='enabled'                                                                                \
+        -D gallium-extra-hud='true'                                                                     \
+        -D vulkan-layers='device-select,overlay'                                                        \
+        -D gallium-nine='true'                                                                          \
+        -D gallium-omx='disabled'                                                                       \
+        -D gallium-opencl='disabled'                                                                    \
+        -D gallium-va='enabled'                                                                         \
+        -D gallium-vdpau='enabled'                                                                      \
+        -D gallium-xa='enabled'                                                                         \
+        -D gallium-xvmc='disabled'                                                                      \
+        -D gbm='enabled'                                                                                \
+        -D gles1='disabled'                                                                             \
+        -D gles2='enabled'                                                                              \
+        -D glvnd='enabled'                                                                              \
+        -D glx='dri'                                                                                    \
+        -D libunwind='enabled'                                                                          \
+        -D llvm='enabled'                                                                               \
+        -D lmsensors='enabled'                                                                          \
+        -D osmesa='true'                                                                                \
+        -D shared-glapi='enabled'                                                                       \
+        -D valgrind='disabled'                                                                          \
+        -D tools=[]                                                                                     \
+        -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
     meson configure --no-pager "$pgo_build_dir"
