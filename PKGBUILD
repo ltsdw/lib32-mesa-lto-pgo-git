@@ -1,8 +1,8 @@
 ##############################################################################
 
-_pkgbuild_dir=$PWD
-
 _mesa_commit="#commit=ab72be6c"
+
+##############################################################################
 
 PGO="off" # possible values are ("generate", "use", "off")
 _march="" # processor architeture, leave empty if unkown
@@ -17,11 +17,11 @@ fi
 ##############################################################################
 
 # sourcing scripts and envars
-source "$_pkgbuild_dir/scripts/utils/envar"
-source "$_pkgbuild_dir/scripts/aux-build"
-source "$_pkgbuild_dir/scripts/aux-package"
-source "$_pkgbuild_dir/scripts/aux-cleaning"
-source "$_pkgbuild_dir/scripts/utils/directories"
+source "$startdir/scripts/utils/envar"
+source "$startdir/scripts/aux-build"
+source "$startdir/scripts/aux-package"
+source "$startdir/scripts/aux-cleaning"
+source "$startdir/scripts/utils/directories"
 
 ###############################################################################
 
