@@ -41,12 +41,12 @@ _no_pgo_build()
 
     meson configure --no-pager _build
 
-    ninja $NINJAFLAGS -C _build
+    ninja ${NINJAFLAGS} -C _build
 }
 
 _generate_pgo_build()
 {
-    meson setup mesa "$pgo_build_dir"                                                                   \
+    meson setup mesa "${pgo_build_dir}"                                                                 \
         --strip                                                                                         \
         --native-file llvm32.native                                                                     \
         -D b_ndebug='false'                                                                             \
@@ -84,14 +84,14 @@ _generate_pgo_build()
         -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
-    meson configure --no-pager "$pgo_build_dir"
+    meson configure --no-pager "${pgo_build_dir}"
 
-    ninja $NINJAFLAGS -C "$pgo_build_dir"
+    ninja ${NINJAFLAGS} -C "${pgo_build_dir}"
 }
 
 _use_pgo_build()
 {
-    meson setup mesa "$pgo_build_dir"                                                                   \
+    meson setup mesa "${pgo_build_dir}"                                                                 \
         --strip                                                                                         \
         --native-file llvm32.native                                                                     \
         -D b_ndebug='false'                                                                             \
@@ -129,7 +129,7 @@ _use_pgo_build()
         -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
-    meson configure --no-pager "$pgo_build_dir"
+    meson configure --no-pager "${pgo_build_dir}"
 
-    ninja $NINJAFLAGS -C "$pgo_build_dir"
+    ninja ${NINJAFLAGS} -C "${pgo_build_dir}"
 }

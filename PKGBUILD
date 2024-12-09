@@ -1,6 +1,6 @@
 ##############################################################################
 
-_mesa_commit="#commit=790759df"
+_mesa_commit="#commit=e26a383e"
 
 ##############################################################################
 
@@ -8,7 +8,7 @@ PGO="off" # possible values are ("generate", "use", "off")
 _march="" # processor architeture, leave empty if unkown
 
 # adapt the naming depeding on the compiled type
-if [ "$PGO" != "off" ]; then
+if [ "${PGO}" != "off" ]; then
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO and PGO. Git version"
 else
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO. Git version"
@@ -17,11 +17,11 @@ fi
 ##############################################################################
 
 # sourcing scripts and envars
-source "$startdir/scripts/utils/envar"
-source "$startdir/scripts/aux-build"
-source "$startdir/scripts/aux-package"
-source "$startdir/scripts/aux-cleaning"
-source "$startdir/scripts/utils/directories"
+source "${startdir}/scripts/utils/envar"
+source "${startdir}/scripts/aux-build"
+source "${startdir}/scripts/aux-package"
+source "${startdir}/scripts/aux-cleaning"
+source "${startdir}/scripts/utils/directories"
 
 ###############################################################################
 
@@ -55,7 +55,7 @@ url="https://www.mesa3d.org"
 
 license=('custom')
 
-source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git$_mesa_commit"
+source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git${_mesa_commit}"
         "LICENSE"
         "llvm32.native"
        )
@@ -78,7 +78,7 @@ pkgver()
 {
     cd mesa
     read -r _ver <VERSION
-    echo ${_ver/-/_}.$(git rev-parse --short HEAD)_$PGO
+    echo ${_ver/-/_}.$(git rev-parse --short HEAD)_${PGO}
 }
 
 prepare()
@@ -92,9 +92,9 @@ prepare()
 
 build()
 {
-    if [ "$PGO" = "generate" ]; then
+    if [ "${PGO}" = "generate" ]; then
         _generate_pgo_build
-    elif [ "$PGO" = "use" ]; then
+    elif [ "${PGO}" = "use" ]; then
         _use_pgo_build
     else
         _no_pgo_build
@@ -106,7 +106,7 @@ package()
     # ninja install command, changed depending on type build
     _ninja_install
 
-    if [ "$PGO" = "generate" ]; then
+    if [ "${PGO}" = "generate" ]; then
         # remove all unneeded files and directories from last pgo generate compile
         _remove_unneeded_pgo_build
     fi
@@ -116,6 +116,6 @@ package()
     # indirect rendering
     ln -s "/usr/lib32/libGLX_mesa.so.0" "${pkgdir}/usr/lib32/libGLX_indirect.so.0"
 
-    install -m644 -Dt  "$pkgdir/usr/share/licenses/$pkgbase/" -m644 "$srcdir/LICENSE"
+    install -m644 -Dt  "${pkgdir}/usr/share/licenses/${pkgbase}/" -m644 "${srcdir}/LICENSE"
 }
 ###############################################################################

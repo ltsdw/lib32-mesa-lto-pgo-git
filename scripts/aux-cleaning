@@ -2,7 +2,8 @@
 
 _remove_build_dir()
 {
-    cd $srcdir
+    cd "${srcdir}"
+
     if [ -d _build ]; then
         rm -rf _build
     fi
@@ -10,27 +11,27 @@ _remove_build_dir()
 
 _remove_pgo_build_dir()
 {
-    if [ "$PGO" = "generate" ]; then
-        if [ -d $pgo_build_dir ]; then
-            rm -rf "$pgo_build_dir"
+    if [ "${PGO}" = "generate" ]; then
+        if [ -d "${pgo_build_dir}" ]; then
+            rm -rf "${pgo_build_dir}"
         fi
     fi
 }
 
 _remove_unneeded_files()
 {
-    rm -rf "$pkgdir/etc"
-    rm -rf "$pkgdir/usr/include"
-    rm -rf "$pkgdir/usr/share/glvnd/"
-    rm -rf "$pkgdir/usr/share/drirc.d/"
-    rm -rf "$pkgdir/usr/share/vulkan/explicit_layer.d/"
-    rm -rf "$pkgdir/usr/share/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json"
-    rm -rf "$pkgdir/usr/bin/mesa-overlay-control.py"
-    rm -rf "$pkgdir/usr/bin"
+    rm -rf "${pkgdir}/etc"
+    rm -rf "${pkgdir}/usr/include"
+    rm -rf "${pkgdir}/usr/share/glvnd/"
+    rm -rf "${pkgdir}/usr/share/drirc.d/"
+    rm -rf "${pkgdir}/usr/share/vulkan/explicit_layer.d/"
+    rm -rf "${pkgdir}/usr/share/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json"
+    rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
+    rm -rf "${pkgdir}/usr/bin"
 }
 
 _remove_unneeded_pgo_build()
 {
-    find "$pgo_build_dir" -maxdepth 1 -type f -exec rm -rf {} \;
-    find "$pgo_build_dir/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
+    find "${pgo_build_dir}" -maxdepth 1 -type f -exec rm -rf {} \;
+    find "${pgo_build_dir}/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
 }
