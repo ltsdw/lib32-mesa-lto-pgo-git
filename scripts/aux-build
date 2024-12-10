@@ -110,7 +110,7 @@ _write_native_file()
     else
         export _native_file="${startdir}/gcc.native"
         _c_args+=("'-flto',")
-        _c_link_args+=("'-flto'," "'-fuse-ld=lld',")
+        _c_link_args+=("'-flto',")
 
         _native_gcc
     fi
