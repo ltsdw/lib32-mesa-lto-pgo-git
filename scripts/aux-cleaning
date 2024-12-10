@@ -20,18 +20,29 @@ _remove_pgo_build_dir()
 
 _remove_unneeded_files()
 {
-    rm -rf "${pkgdir}/etc"
-    rm -rf "${pkgdir}/usr/include"
-    rm -rf "${pkgdir}/usr/share/glvnd/"
-    rm -rf "${pkgdir}/usr/share/drirc.d/"
-    rm -rf "${pkgdir}/usr/share/vulkan/explicit_layer.d/"
-    rm -rf "${pkgdir}/usr/share/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json"
-    rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
-    rm -rf "${pkgdir}/usr/bin"
+    if [ -d "${pkgdir}" ]; then
+        rm -rf "${pkgdir}/etc"
+        rm -rf "${pkgdir}/usr/include"
+        rm -rf "${pkgdir}/usr/share/glvnd/"
+        rm -rf "${pkgdir}/usr/share/drirc.d/"
+        rm -rf "${pkgdir}/usr/share/vulkan/explicit_layer.d/"
+        rm -rf "${pkgdir}/usr/share/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json"
+        rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
+        rm -rf "${pkgdir}/usr/bin"
+        rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
+        rm -rf "${pkgdir}/usr/bin"
+    fi
+
+    if [ -d "${startdir}" ]; then
+        rm -rf "${startdir}/clang.native"
+        rm -rf "${startdir}/gcc.native"
+    fi
 }
 
 _remove_unneeded_pgo_build()
 {
-    find "${pgo_build_dir}" -maxdepth 1 -type f -exec rm -rf {} \;
-    find "${pgo_build_dir}/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
+    if [ -d "${pgo_build_dir}" ]; then
+        find "${pgo_build_dir}" -maxdepth 1 -type f -exec rm -rf {} \;
+        find "${pgo_build_dir}/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
+    fi
 }

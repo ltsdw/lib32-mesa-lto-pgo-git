@@ -1,10 +1,48 @@
 #! /hint/sh
 
+_set_required_number_fds()
+{
+    DEFAULT_FD_NUMBER=$(ulimit -n)
+    ulimit -n 8192
+}
+
+_write_native_file()
+{
+    if [ "${_use_clang}" ]; then
+        export NATIVE_FILE="${startdir}/clang.native"
+
+		cat <<-EOF > "${NATIVE_FILE}"
+			#! /hint/toml
+
+			[binaries]
+			c = ['/usr/bin/clang', '-m32']
+			cpp = ['/usr/bin/clang++', '-m32']
+			ar = '/usr/bin/llvm-ar'
+			strip = '/usr/bin/llvm-strip'
+			llvm-config = '/usr/bin/llvm-config32'
+			pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
+		EOF
+    else
+        export NATIVE_FILE="${startdir}/gcc.native"
+		cat <<-EOF > "${NATIVE_FILE}"
+			#! /hint/toml
+
+			[binaries]
+			c = ['/usr/bin/gcc', '-m32']
+			cpp = ['/usr/bin/g++', '-m32']
+			ar = '/usr/bin/ar'
+			strip = '/usr/bin/strip'
+			llvm-config = '/usr/bin/llvm-config32'
+			pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
+		EOF
+    fi
+}
+
 _no_pgo_build()
 {
     meson setup mesa _build                                                                             \
         --strip                                                                                         \
-        --native-file llvm32.native                                                                     \
+        --native-file "${NATIVE_FILE}"                                                                  \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D buildtype='plain'                                                                            \
@@ -48,7 +86,7 @@ _generate_pgo_build()
 {
     meson setup mesa "${pgo_build_dir}"                                                                 \
         --strip                                                                                         \
-        --native-file llvm32.native                                                                     \
+        --native-file "${NATIVE_FILE}"                                                                  \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D b_pgo='generate'                                                                             \
@@ -93,7 +131,7 @@ _use_pgo_build()
 {
     meson setup mesa "${pgo_build_dir}"                                                                 \
         --strip                                                                                         \
-        --native-file llvm32.native                                                                     \
+        --native-file "${NATIVE_FILE}"                                                                  \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D b_pgo='use'                                                                                  \

@@ -4,11 +4,13 @@ NINJAFLAGS="-d stats -w phonycycle=err"
 
 if ! [ -z "${_march}" ]; then
     march="-march=${_march}"
+    mtune="-mtune=${_march}"
 fi
 
-export CC="gcc -m32 -Wno-missing-profile -Wno-nonnull-compare"
-export CXX="g++ -m32 -Wno-missing-profile -Wno-nonnull-compare"
-export PKG_CONFIG="/usr/bin/i686-pc-linux-gnu-pkg-config"
-export CFLAGS="${march} -Ofast -falign-functions=32 -fno-semantic-interposition -mprefer-vector-width=256"
-export CXXFLAGS="${march} -Ofast -falign-functions=32 -fno-semantic-interposition -mprefer-vector-width=256"
-export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
+if [ ! -z "${_avx}" ]; then
+    avx_instructions="-mprefer-vector-width=${_avx}"
+fi
+
+export CFLAGS="${march} ${mtune} -O3 -flto=thin -mfpmath=sse -msse2 -falign-functions=32 -fno-semantic-interposition ${avx_instructions}"
+export CXXFLAGS="${CFLAGS}"
+export LDFLAGS="-Wl,-O3,--sort-common,--as-needed,-z,relro,-z,now"
