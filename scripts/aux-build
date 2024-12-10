@@ -1,40 +1,118 @@
 #! /hint/sh
 
-_set_required_number_fds()
+_set_number_of_fds()
 {
-    DEFAULT_FD_NUMBER=$(ulimit -n)
     ulimit -n 8192
+}
+
+_native_clang()
+{
+	cat <<-EOF > "${_native_file}"
+		#! /hint/toml
+
+		[binaries]
+		c = ['/usr/bin/clang', '-m32', '-mfpmath=sse']
+		cpp = ['/usr/bin/clang++', '-m32', '-mfpmath=sse']
+		ar = '/usr/bin/llvm-ar'
+		strip = '/usr/bin/llvm-strip'
+		llvm-config = '/usr/bin/llvm-config32'
+		pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
+
+		[built-in options]
+		c_args = [ ${_c_args[@]} ]
+		c_link_args = [ ${_c_link_args[@]} ]
+		cpp_args = [ ${_c_args[@]} ]
+		cpp_link_args = [ ${_c_link_args[@]} ]
+		objc_args = []
+		objc_link_args = [ ${_c_link_args[@]} ]
+		objcpp_args = []
+		objcpp_link_args = [ ${_c_link_args[@]} ]
+		fortran_args = [ '-O3' ]
+		fortran_link_args =[ ${_c_link_args[@]} ]
+
+		[host_machine]
+		system = '${_host_machine_os}'
+		cpu_family = '${_cpu_architecture}'
+		cpu = '${_cpu_microarchitecture}'
+		endian = '${_endianess}'
+	EOF
+}
+
+_native_gcc()
+{
+	cat <<-EOF > "${_native_file}"
+		#! /hint/toml
+
+		[binaries]
+		c = ['/usr/bin/gcc', '-m32', '-mfpmath=sse']
+		cpp = ['/usr/bin/g++', '-m32', '-mfpmath=sse']
+		ar = '/usr/bin/ar'
+		strip = '/usr/bin/strip'
+		llvm-config = '/usr/bin/llvm-config32'
+		pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
+
+		[built-in options]
+		c_args = [ ${_c_args[@]} ]
+		c_link_args = [ ${_c_link_args[@]} ]
+		cpp_args = [ ${_c_args[@]} ]
+		cpp_link_args = [ ${_c_link_args[@]} ]
+		objc_args = []
+		objc_link_args = [ ${_c_link_args[@]} ]
+		objcpp_args = []
+		objcpp_link_args = [ ${_c_link_args[@]} ]
+		fortran_args = [ '-O3' ]
+		fortran_link_args =[ ${_c_link_args[@]} ]
+
+		[host_machine]
+		system = '${_host_machine_os}'
+		cpu_family = '${_cpu_architecture}'
+		cpu = '${_cpu_microarchitecture}'
+		endian = '${_endianess}'
+	EOF
 }
 
 _write_native_file()
 {
+    if ! [ -z "${_march}" ]; then
+        march="'-march=${_cpu_microarchitecture}',"
+        mtune="'-mtune=${_cpu_microarchitecture}',"
+    fi
+
+    if [ ! -z "${_avx}" ]; then
+        avx_instructions="'-mprefer-vector-width=${_avx}',"
+    fi
+
+    _c_args=(
+        "${march}"
+        "${mtune}"
+        "'-O3',"
+        "'-falign-functions=32',"
+        "${avx_instructions}"
+    )
+    _c_link_args=(
+        "${_c_args[@]}"
+        "'-Wl,-O3',"
+        "'-Wl,--as-needed',"
+        "'-Wl,--sort-common',"
+    )
+
     if [ "${_use_clang}" ]; then
-        export NATIVE_FILE="${startdir}/clang.native"
+        export _native_file="${startdir}/clang.native"
 
-		cat <<-EOF > "${NATIVE_FILE}"
-			#! /hint/toml
+        _c_args+=("'-flto=thin',")
+        _c_link_args+=(
+            "'-flto=thin',"
+            "'-fuse-ld=lld',"
+            "'-Wl,--thinlto-jobs=$(nproc)',"
+        )
 
-			[binaries]
-			c = ['/usr/bin/clang', '-m32']
-			cpp = ['/usr/bin/clang++', '-m32']
-			ar = '/usr/bin/llvm-ar'
-			strip = '/usr/bin/llvm-strip'
-			llvm-config = '/usr/bin/llvm-config32'
-			pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
-		EOF
+        _native_clang
     else
-        export NATIVE_FILE="${startdir}/gcc.native"
-		cat <<-EOF > "${NATIVE_FILE}"
-			#! /hint/toml
+        export _native_file="${startdir}/gcc.native"
+        _c_args+=("'-flto',")
+        _c_link_args+=("'-flto'," "'-fuse-ld=lld',")
 
-			[binaries]
-			c = ['/usr/bin/gcc', '-m32']
-			cpp = ['/usr/bin/g++', '-m32']
-			ar = '/usr/bin/ar'
-			strip = '/usr/bin/strip'
-			llvm-config = '/usr/bin/llvm-config32'
-			pkg-config = '/usr/bin/i686-pc-linux-gnu-pkg-config'
-		EOF
+        _native_gcc
     fi
 }
 
@@ -42,7 +120,7 @@ _no_pgo_build()
 {
     meson setup mesa _build                                                                             \
         --strip                                                                                         \
-        --native-file "${NATIVE_FILE}"                                                                  \
+        --native-file "${_native_file}"                                                                 \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D buildtype='plain'                                                                            \
@@ -84,9 +162,9 @@ _no_pgo_build()
 
 _generate_pgo_build()
 {
-    meson setup mesa "${pgo_build_dir}"                                                                 \
+    meson setup mesa "${_pgo_build_dir}"                                                                \
         --strip                                                                                         \
-        --native-file "${NATIVE_FILE}"                                                                  \
+        --native-file "${_native_file}"                                                                 \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D b_pgo='generate'                                                                             \
@@ -122,16 +200,16 @@ _generate_pgo_build()
         -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
-    meson configure --no-pager "${pgo_build_dir}"
+    meson configure --no-pager "${_pgo_build_dir}"
 
-    ninja ${NINJAFLAGS} -C "${pgo_build_dir}"
+    ninja ${NINJAFLAGS} -C "${_pgo_build_dir}"
 }
 
 _use_pgo_build()
 {
-    meson setup mesa "${pgo_build_dir}"                                                                 \
+    meson setup mesa "${_pgo_build_dir}"                                                                \
         --strip                                                                                         \
-        --native-file "${NATIVE_FILE}"                                                                  \
+        --native-file "${_native_file}"                                                                 \
         -D b_ndebug='false'                                                                             \
         -D b_lto='true'                                                                                 \
         -D b_pgo='use'                                                                                  \
@@ -167,7 +245,7 @@ _use_pgo_build()
         -D zstd='enabled'                                                                               \
         -D microsoft-clc='disabled'
 
-    meson configure --no-pager "${pgo_build_dir}"
+    meson configure --no-pager "${_pgo_build_dir}"
 
-    ninja ${NINJAFLAGS} -C "${pgo_build_dir}"
+    ninja ${NINJAFLAGS} -C "${_pgo_build_dir}"
 }

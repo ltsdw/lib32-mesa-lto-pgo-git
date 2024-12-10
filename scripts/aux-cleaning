@@ -11,9 +11,9 @@ _remove_build_dir()
 
 _remove_pgo_build_dir()
 {
-    if [ "${PGO}" = "generate" ]; then
-        if [ -d "${pgo_build_dir}" ]; then
-            rm -rf "${pgo_build_dir}"
+    if [ "${_pgo}" = "generate" ]; then
+        if [ -d "${_pgo_build_dir}" ]; then
+            rm -rf "${_pgo_build_dir}"
         fi
     fi
 }
@@ -29,20 +29,13 @@ _remove_unneeded_files()
         rm -rf "${pkgdir}/usr/share/vulkan/implicit_layer.d/VkLayer_MESA_device_select.json"
         rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
         rm -rf "${pkgdir}/usr/bin"
-        rm -rf "${pkgdir}/usr/bin/mesa-overlay-control.py"
-        rm -rf "${pkgdir}/usr/bin"
-    fi
-
-    if [ -d "${startdir}" ]; then
-        rm -rf "${startdir}/clang.native"
-        rm -rf "${startdir}/gcc.native"
     fi
 }
 
 _remove_unneeded_pgo_build()
 {
-    if [ -d "${pgo_build_dir}" ]; then
-        find "${pgo_build_dir}" -maxdepth 1 -type f -exec rm -rf {} \;
-        find "${pgo_build_dir}/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
+    if [ -d "${_pgo_build_dir}" ]; then
+        find "${_pgo_build_dir}" -maxdepth 1 -type f -exec rm -rf {} \;
+        find "${_pgo_build_dir}/"* -maxdepth 0 -type d ! -name "src" -exec rm -rf {} \;
     fi
 }

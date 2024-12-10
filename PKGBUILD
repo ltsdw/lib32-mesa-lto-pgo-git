@@ -4,13 +4,18 @@ _mesa_commit="#commit=03fc4838"
 
 ##############################################################################
 
-PGO="off" # possible values are ("generate", "use", "off")
+_pgo="off" # possible values are ("generate", "use", "off")
 _use_clang="" # leave empty to default to gcc
-_march="" # processor architeture, leave empty if unknown
+_host_machine_os="linux" # os that's currently running (probably linux for Arch Linux)
+_cpu_architecture="x86_64" # cpu architeture ("x86", "x86_64", "arch64", etc)
+_endianess="little" # possible values are ("little", "big")
+_cpu_microarchitecture="" # processor architeture, ("bulldozer", "znver1", "sandybridge", etc) leave empty if unknown
 _avx="" # which avx instrunctions to be used, leave empty if unknown
 
+##############################################################################
+
 # adapt the naming depeding on the compiled type
-if [ "${PGO}" != "off" ]; then
+if [ "${_pgo}" != "off" ]; then
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO and PGO. Git version"
 else
     pkgdesc="an open-source implementation of the OpenGL specification, compiled with LTO. Git version"
@@ -37,7 +42,7 @@ pkgver=24.1.0_devel.f3fe1f2f18d_off
 pkgrel=1
 arch=('x86_64')
 
-makedepends=(
+makedepends+=(
     'python-mako' 'lib32-libxml2' 'xorgproto'
     'lib32-clang' 'lib32-gcc-libs' 'lib32-libvdpau' 'lib32-libelf' 'git' 'lib32-libglvnd'
     'wayland-protocols' 'lib32-wayland' 'meson' 'lib32-libva' 'lib32-libxrandr'
@@ -85,7 +90,7 @@ pkgver()
 {
     cd mesa
     read -r _ver <VERSION
-    echo ${_ver/-/_}.$(git rev-parse --short HEAD)_${PGO}
+    echo ${_ver/-/_}.$(git rev-parse --short HEAD)_${_pgo}
 }
 
 prepare()
@@ -105,9 +110,9 @@ prepare()
 
 build()
 {
-    if [ "${PGO}" = "generate" ]; then
+    if [ "${_pgo}" = "generate" ]; then
         _generate_pgo_build
-    elif [ "${PGO}" = "use" ]; then
+    elif [ "${_pgo}" = "use" ]; then
         _use_pgo_build
     else
         _no_pgo_build
@@ -119,7 +124,7 @@ package()
     # ninja install command, changed depending on type build
     _ninja_install
 
-    if [ "${PGO}" = "generate" ]; then
+    if [ "${_pgo}" = "generate" ]; then
         # remove all unneeded files and directories from last pgo generate compile
         _remove_unneeded_pgo_build
     fi
