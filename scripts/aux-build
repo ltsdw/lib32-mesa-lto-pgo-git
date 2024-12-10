@@ -73,7 +73,7 @@ _native_gcc()
 
 _write_native_file()
 {
-    if ! [ -z "${_march}" ]; then
+    if ! [ -z "${_cpu_microarchitecture}" ]; then
         march="'-march=${_cpu_microarchitecture}',"
         mtune="'-mtune=${_cpu_microarchitecture}',"
     fi
