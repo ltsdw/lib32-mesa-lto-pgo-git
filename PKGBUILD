@@ -23,7 +23,7 @@ fi
 
 # add clang as a dependency if needed
 if [ ! -z "${_use_clang}" ]; then
-    makedepends+=('clang')
+    makedepends+=('clang' 'lib32-llvm' 'lib32-llvm-libs' 'lld')
 fi
 
 ##############################################################################
@@ -45,7 +45,7 @@ makedepends+=(
     'python-mako' 'lib32-libxml2' 'xorgproto'
     'lib32-clang' 'lib32-gcc-libs' 'lib32-libvdpau' 'lib32-libelf' 'git' 'lib32-libglvnd'
     'wayland-protocols' 'lib32-wayland' 'meson' 'lib32-libva' 'lib32-libxrandr'
-    'python-packaging' 'python-pyaml' 'spirv-tools' 'spirv-llvm-translator'
+    'python-packaging' 'python-pyaml' 'lib32-spirv-tools' 'lib32-spirv-llvm-translator'
 )
 
 depends=(
