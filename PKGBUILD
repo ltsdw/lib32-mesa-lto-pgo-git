@@ -29,7 +29,6 @@ fi
 ##############################################################################
 
 # sourcing scripts and envars
-source "${startdir}/scripts/utils/envar"
 source "${startdir}/scripts/aux-build"
 source "${startdir}/scripts/aux-package"
 source "${startdir}/scripts/aux-cleaning"
