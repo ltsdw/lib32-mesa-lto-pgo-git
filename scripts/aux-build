@@ -120,17 +120,17 @@ _no_pgo_build()
 {
     meson setup mesa _build                                                                                     \
         --strip                                                                                                 \
-        --native-file "${_native_file}"                                                                         \
+        --native-file "${_native_file}"                                                                           \
         -D b_ndebug='false'                                                                                     \
         -D b_lto='true'                                                                                         \
         -D buildtype='plain'                                                                                    \
         --wrap-mode='nofallback'                                                                                \
-        -D prefix='/usr'                                                                                        \
+        -D prefix='/usr'                                                                                         \
         -D sysconfdir='/etc'                                                                                    \
         --libdir='/usr/lib32'                                                                                   \
         -D platforms='x11,wayland'                                                                              \
         -D gallium-drivers='r300,r600,radeonsi,nouveau,virgl,svga,softpipe,llvmpipe,i915,iris,crocus,zink,d3d12'\
-        -D vulkan-drivers='amd,intel'                                                                           \
+        -D vulkan-drivers='amd,intel_hasvk,intel'                                                               \
         -D egl='enabled'                                                                                        \
         -D gallium-extra-hud='true'                                                                             \
         -D vulkan-layers='device-select,overlay'                                                                \
@@ -162,18 +162,18 @@ _generate_pgo_build()
 {
     meson setup mesa "${_pgo_build_dir}"                                                                        \
         --strip                                                                                                 \
-        --native-file "${_native_file}"                                                                         \
+        --native-file "${_native_file}"                                                                           \
         -D b_ndebug='false'                                                                                     \
         -D b_lto='true'                                                                                         \
         -D b_pgo='generate'                                                                                     \
         -D buildtype='plain'                                                                                    \
         --wrap-mode='nofallback'                                                                                \
-        -D prefix='/usr'                                                                                        \
+        -D prefix='/usr'                                                                                         \
         -D sysconfdir='/etc'                                                                                    \
         --libdir='/usr/lib32'                                                                                   \
         -D platforms='x11,wayland'                                                                              \
         -D gallium-drivers='r300,r600,radeonsi,nouveau,virgl,svga,softpipe,llvmpipe,i915,iris,crocus,zink,d3d12'\
-        -D vulkan-drivers='amd,intel'                                                                           \
+        -D vulkan-drivers='amd,intel_hasvk,intel'                                                               \
         -D egl='enabled'                                                                                        \
         -D gallium-extra-hud='true'                                                                             \
         -D vulkan-layers='device-select,overlay'                                                                \
@@ -205,18 +205,18 @@ _use_pgo_build()
 {
     meson setup mesa "${_pgo_build_dir}"                                                                        \
         --strip                                                                                                 \
-        --native-file "${_native_file}"                                                                         \
+        --native-file "${_native_file}"                                                                           \
         -D b_ndebug='false'                                                                                     \
         -D b_lto='true'                                                                                         \
         -D b_pgo='use'                                                                                          \
         -D buildtype='plain'                                                                                    \
         --wrap-mode='nofallback'                                                                                \
-        -D prefix='/usr'                                                                                        \
+        -D prefix='/usr'                                                                                         \
         -D sysconfdir='/etc'                                                                                    \
         --libdir='/usr/lib32'                                                                                   \
         -D platforms='x11,wayland'                                                                              \
         -D gallium-drivers='r300,r600,radeonsi,nouveau,virgl,svga,softpipe,llvmpipe,i915,iris,crocus,zink,d3d12'\
-        -D vulkan-drivers='amd,intel'                                                                           \
+        -D vulkan-drivers='amd,intel,intel_hasvk'                                                               \
         -D egl='enabled'                                                                                        \
         -D gallium-extra-hud='true'                                                                             \
         -D vulkan-layers='device-select,overlay'                                                                \
